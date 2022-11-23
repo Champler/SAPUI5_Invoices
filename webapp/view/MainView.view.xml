@@ -1,9 +1,57 @@
 <mvc:View controllerName="logalicourse.invoices.controller.MainView"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    >
     <Page id="page" title="{i18n>title}">
         <content> 
-            <Text text="Hello World"></Text>
+           <Panel headerText="{i18n>selectionScreen}" id="panel"> 
+            <Label id="labelShipName" text="Ship Name" class="sapUiSmallMargin" labelFor="shipName"/> 
+            <Input id="shipName" width="200px" class="sapUiSmallMargin"/>
+            
+            <Label id="labelCountry" text="Country" class="sapUiSmallMargin"/> 
+            <Select id="slCountry" selectedKey="{selectionScreen>/CountryKey}" 
+                forceSelection="false" 
+                items="{selectionScreen>/Countries}"
+                class="sapUiSmallMargin"
+                >
+                <items> 
+                    <core:Item id="1" key="{selectionScreen>key}" text="{selectionScreen>text}"/>
+                </items>
+            </Select>
+            <Button id="btnFilter" 
+                    text="{i18n>btnFilter}" 
+                    icon="sap-icon://filter" 
+                    press="onFilter"
+                    class="sapUiSmallMarginEnd" 
+                    />
+            <Button id="btnClearFilter"
+                    text="{i18n>btnClearFilters}"
+                    icon="sap-icon://clear-filter"
+                    press="onClearFilter"
+                    class="sapUiSmallMarginEnd"
+                    />
+           </Panel>
+
+           <Panel id="secondPanel">
+               <List id="invoicesList" headerText="{i18n>invoicesHeaderList}" class="sapUiResponsiveMargin" width="auto" items="{/Invoices}">
+               <items>
+                 <ObjectListItem title="{ShipName} - {Country}" number="{parts: [ {path:'ExtendedPrice'},
+                                                                                  {path:'selectionScreen>/Currency'}],
+                                                                                   type: 'sap.ui.model.type.Currency',
+                                                                                   formatOptions: {
+                                                                                    showMeasure: false
+                                                                                   }}" 
+                                                                id="item"
+                                                                numberUnit="USD"
+                                                                numberState="{= ${ExtendedPrice} > 100? 'Success' : 'Warning'}"                
+                                                                >
+                 </ObjectListItem>
+               </items>
+                   
+               </List>
+               
+           </Panel>
         </content>
     </Page>
 </mvc:View>
